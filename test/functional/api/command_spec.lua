@@ -274,6 +274,18 @@ describe('nvim_create_user_command', function()
     eq(42, api.nvim_eval('g:command_fired'))
   end)
 
+  it('nargs = "0" accepts no arguments', function()
+    api.nvim_create_user_command('NargsZeroStr', 'let g:nargs_zero = 1', { nargs = '0' })
+    command('NargsZeroStr')
+    eq(1, api.nvim_eval('g:nargs_zero'))
+  end)
+
+  it('nargs = "1" accepts exactly one argument', function()
+    api.nvim_create_user_command('NargsOneStr', 'let g:nargs_one = <args>', { nargs = '1' })
+    command('NargsOneStr 42')
+    eq(42, api.nvim_eval('g:nargs_one'))
+  end)
+
   it('works with Lua functions', function()
     exec_lua [[
       result = {}

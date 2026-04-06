@@ -1129,6 +1129,11 @@ void create_user_command(uint64_t channel_id, String name, Union(String, LuaRef)
     });
 
     switch (opts->nargs.data.string.data[0]) {
+    case '0':
+      break;
+    case '1':
+      argt |= EX_EXTRA | EX_NOSPC | EX_NEEDARG;
+      break;
     case '*':
       argt |= EX_EXTRA;
       break;
