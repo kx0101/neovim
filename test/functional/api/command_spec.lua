@@ -269,21 +269,9 @@ describe('nvim_create_user_command', function()
   before_each(clear)
 
   it('works with strings', function()
-    api.nvim_create_user_command('SomeCommand', 'let g:command_fired = <args>', { nargs = 1 })
+    api.nvim_create_user_command('SomeCommand', 'let g:command_fired = <args>', { nargs = '1' })
     command('SomeCommand 42')
     eq(42, api.nvim_eval('g:command_fired'))
-  end)
-
-  it('nargs = "0" accepts no arguments', function()
-    api.nvim_create_user_command('NargsZeroStr', 'let g:nargs_zero = 1', { nargs = '0' })
-    command('NargsZeroStr')
-    eq(1, api.nvim_eval('g:nargs_zero'))
-  end)
-
-  it('nargs = "1" accepts exactly one argument', function()
-    api.nvim_create_user_command('NargsOneStr', 'let g:nargs_one = <args>', { nargs = '1' })
-    command('NargsOneStr 42')
-    eq(42, api.nvim_eval('g:nargs_one'))
   end)
 
   it('works with Lua functions', function()
@@ -639,13 +627,13 @@ describe('nvim_create_user_command', function()
     ]]
     )
 
-    -- f-args is an empty table when the command nargs=0
+    -- f-args is an empty table when the command nargs='0'
     exec_lua [[
       result = {}
       vim.api.nvim_create_user_command('CommandWithNoArgs', function(opts)
         result = opts
       end, {
-        nargs = 0,
+        nargs = '0',
         bang = true,
         count = 2,
         register = true,
